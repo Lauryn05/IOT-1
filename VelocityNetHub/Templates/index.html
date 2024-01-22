@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VelocityNetHub</title>
+    <link rel="stylesheet" href="style1.css">
+    <style>
+        body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background-color: #F1EAFF;
+        text-align: center;
+        padding: 20% 0;
+        color: #333;
+    }
+    
+    #main-content {
+        display: none;
+    }
+
+    #logo {
+        width: 50px;
+        height: 50px;
+    }
+    .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 10px;
+        background-color: #E5D4FF;
+        border-radius: 5px;
+        box-shadow: 0 0 0px rgba(0, 0, 0, 0.1);
+    }
+</style>
+</head>
+
+<body>
+    <header>
+        <img id="logo" src="logo.png">
+    </header>
+    <div class="container">
+    <div id="splash-screen">
+        <h1>VelocityNetHub</h1>
+        <p>Setting up...</p>
+    </div>
+    </div>
+    <div class="container">
+    <div id="main-content">
+        <h1>Network Configuration</h1>
+        <p><strong>Hostname:</strong> {{ config.hostname }}</p>
+
+        <h2>Interfaces:</h2>
+        <ul>
+            {% for interface, details in config.interfaces.items() %}
+                <li><strong>{{ interface }}</strong>: IP - {{ details.ip }}, Subnet - {{ details.subnet }}</li>
+            {% endfor %}
+        </ul>
+
+       <!-- <h1>Traffic Scenarios</h1>
+        <ul>
+            {% for scenario, details in scenarios.items() %}
+                <li>
+                    <strong>{{ scenario }}</strong>: Traffic Type - {{ details.traffic_type }},
+                    Duration - {{ details.duration }} seconds
+                </li>
+            {% endfor %}
+        </ul> -->
+        <h2>Configure Device</h2>
+        <form action="/configure" method="post">
+            <label for="hostname">New Hostname:</label>
+            <input type="text" id="hostname" name="hostname">
+            <button type="submit">Apply Changes</button> <br>
+        </form>
+        <form action="/configure" method="post">
+            <label for="interfaces">New Interface:</label>
+            <input type="text" id="interface" name="interface">
+            <button type="submit">Apply Changes</button> <br>
+        </form>
+
+        <h2>Generate Traffic</h2>
+        <ul>
+            {% for scenario, details in scenarios.items() %}
+                <li>
+                    <a href="{{ url_for('generate_traffic', scenario_name=scenario) }}">
+                        Generate Traffic for {{ scenario }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+        <h1>Topology</h1>
+        <a href="{{ url_for('topology') }}">View Topology
+        </a>
+
+    </div>
+</div>
+    <script>
+        setTimeout(function() {
+            document.getElementById('splash-screen').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
+        }, 3000); 
+    </script>
+</body>
+</html>
